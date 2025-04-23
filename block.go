@@ -17,6 +17,7 @@ type Block struct {
 	Data          []byte
 	PrevBlockHash []byte
 	Hash          []byte
+	Nonce         int
 }
 
 func (b *Block) SetHask() {
@@ -34,8 +35,11 @@ func (b *Block) SetHask() {
 // Set Hash: The SetHash method computes and sets the block's hash.
 // Return Block: The newly created block is returned.
 func NewBlock(data string, prevBlockHask []byte) *Block {
-	block := &Block{time.Now().Unix(), []byte(data), prevBlockHask, []byte{}}
-	block.SetHask()
+	block := &Block{time.Now().Unix(), []byte(data), prevBlockHask, []byte{}, 0}
+	pow := NewProofOfWork(block)
+	nonce, hash := pow.Run()
+	block.Hash = hash[:]
+	block.Nonce = nonce
 	return block
 
 }
