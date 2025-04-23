@@ -19,10 +19,6 @@ type Block struct {
 	Hash          []byte
 }
 
-type Blockchain struct {
-	blocks []*Block
-}
-
 func (b *Block) SetHask() {
 	//convert to a byte slice
 	timeStamp := []byte(strconv.FormatInt(b.TimeStamp, 10))
@@ -32,16 +28,6 @@ func (b *Block) SetHask() {
 	hash := sha256.Sum256(header)
 
 	b.Hash = hash[:]
-}
-
-// Retrieve Previous Block: The last block in the chain is retrieved.
-// Create New Block: A new block is created using the provided data and the hash of the previous block.
-// Append to Blockchain: The new block is appended to the blockchain.
-func (bc *Blockchain) AddBlock(data string) {
-	prevBlock := bc.blocks[len(bc.blocks)-1]
-	newBlock := NewBlock(data, prevBlock.Hash)
-	bc.blocks = append(bc.blocks, newBlock)
-
 }
 
 // Initialize Block: A new Block is initialized with the current timestamp, provided data, and the hash of the previous block.
@@ -56,9 +42,4 @@ func NewBlock(data string, prevBlockHask []byte) *Block {
 
 func NewBlockChain() *Blockchain {
 	return &Blockchain{[]*Block{NewGenesisBlock()}}
-}
-
-func NewGenesisBlock() *Block {
-	return NewBlock("genesis block", []byte{})
-
 }
